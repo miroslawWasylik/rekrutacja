@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <title>Hello, world!</title>
+    <script type="text/javascript">
+        function klik() {
+            let sum = [];
+            let sumOdd = [];
+            let sumEven = [];
+            let td = document.getElementsByTagName("td");
+            let i, text, p;
+
+            td[0].innerText = "";
+            td[1].innerText = "";
+
+            for(i=0;i<20;i++)
+            {
+                sum[i] = Math.floor((Math.random() * 100) + 1);      
+            }
+
+            sum.forEach(element => {
+                if(element % 2) 
+                    sumEven.unshift(element);
+                else 
+                    sumOdd.unshift(element); 
+            }); 
+
+            sumEven.sort((function(a, b){return a - b}));
+            sumOdd.sort((function(a, b){return a - b}));
+
+            p = document.createElement("p");
+
+            sumEven.forEach(element => {
+                text = document.createTextNode(element);
+                p = document.createElement("p");
+                p.appendChild(text);
+                td[0].appendChild(p);
+            });
+            sumOdd.forEach(element => {
+                text = document.createTextNode(element);
+                p = document.createElement("p");
+                p.appendChild(text);
+                td[1].appendChild(p);
+            })       
+        }
+    </script>
+  </head>
+  <body>
+    <button onclick="klik()">Click me!</button>
+    <table>
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+  </body>
+</html>

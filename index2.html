@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style2.css">
+    <title>Hello, world!</title>
+    <script type="text/javascript">
+        let array_tytul = [];
+        document.addEventListener("DOMContentLoaded", () => {
+            let wynik = localStorage.getItem('array_tytul');
+            Object.assign(array_tytul, JSON.parse(wynik));
+            console.log(array_tytul);
+
+            var globalCounter = 0;
+            var tbody = document.getElementsByTagName('tbody');
+            // console.log(array_tytul[0]);
+            for (var i = 0; i < Object.keys(array_tytul).length; i++) {
+            var tr = "<tr>";
+            Object.values(array_tytul[i]).forEach(elem => {
+            tr += "<td>" + elem + "</td>";
+            });
+            tr += "</tr>";
+            tbody[0].innerHTML += tr;
+            }
+            
+        });
+        let first = true;
+        let nrr = 1;    
+
+        function submited(evt) {
+            evt.preventDefault();
+            
+            let array_autor = [];
+
+            let tytul = document.getElementById("tytul").value;
+            let LT = tytul.length;
+            let autor = document.getElementById("autor").value;
+            let LA = autor.length;
+            let error = document.getElementsByClassName("error"); 
+            let sel = document.getElementById("select");
+            let LS = sel.options.selectedIndex;
+
+            if(LT < 1 || LA < 3)
+                error[0].style.display = "block";
+            else {
+                let tr = document.getElementsByTagName("tr");
+                let tb = document.getElementsByTagName("tbody");
+                teer = {"tytul": tytul, "autor": autor, "radio": nrr, "select": LS}
+                let now = document.createElement("tr");
+
+                if(first) 
+                {
+                    tr[0].children[0].innerText = tytul;
+                    tr[0].children[1].innerText = autor;
+                    tr[0].children[2].innerText = nrr;
+                    tr[0].children[3].innerText = LS;
+
+                    array_autor = {
+                        "tytul": tytul,
+                        "autor": autor,
+                        "numer": nrr,
+                        "lista": LS
+                    };
+                }
+                else
+                {
+                    now = tr[0].cloneNode(true);
+                    now.children[0].innerText = tytul;
+                    now.children[1].innerText = autor;
+                    now.children[2].innerText = nrr;
+                    now.children[3].innerText = LS;
+                    tb[0].appendChild(now);
+                    array_autor = {
+                        "tytul": tytul,
+                        "autor": autor,
+                        "numer": nrr,
+                        "lista": LS
+                    };
+                }
+
+                array_tytul.push(array_autor);
+                console.log(array_tytul);
+                first = false;
+                document.getElementById("tytul").value = '';
+                document.getElementById("autor").value = '';
+            }
+        }
+
+        function pacz(evt) {
+            let ar = [];
+            let error = document.getElementsByClassName("error");
+            ar = document.getElementsByTagName("input");
+            if(document.activeElement === ar[0]) {
+                error[0].style.display = "none";
+            } else if(document.activeElement === ar[1]) {
+                error[0].style.display = "none";
+            }
+        }
+
+        function ktory(nr) {
+            switch(nr) {
+                case 1: 
+                    nrr = 1;
+                    break;
+                case 2:
+                    nrr = 2;
+                    break;
+                case 3:
+                    nrr = 3;
+                    break;
+                case 4:
+                    nrr = 4;
+                    break;
+                case 5:
+                    nrr = 5;
+                    break;
+            }
+        }
+
+        window.onload=function() {
+        let x = document.getElementById("submited");
+        let y = document.getElementsByTagName("input");
+        let i;
+
+        x.addEventListener('click', submited, false);
+        y[0].addEventListener('focus', pacz, false);
+        y[1].addEventListener('focus', pacz, false);
+        y[1].click();
+        window.addEventListener('beforeunload', () => {
+            localStorage.clear();
+            localStorage.setItem('array_tytul', JSON.stringify(array_tytul));
+            if(array_tytul.length == 20) {
+                localStorage.clear();
+            }
+        });
+    }
+    </script>
+</head>
+<body>
+    <form>
+        <label for="tytul">Tytuł książki</label>
+        <input type="text" id="tytul" name="tytul" minlength="1"><br />
+        <label for="autor">Autor książki</label>
+        <input type="text" id="autor" name="autor" minlength="3"><br />
+        <label for="priorytet">Priorytet</label>
+        <label for="prioryet_1">1</label>
+        <input type="radio" id="prioryet_1" name="prioryet" value="1" checked="checked" onclick="ktory(1)">
+        <label for="prioryet_2">2</label>
+        <input type="radio" id="prioryet_2" name="prioryet" value="2" onclick="ktory(2)">
+        <label for="prioryet_3">3</label>
+        <input type="radio" id="prioryet_3" name="prioryet" value="3" onclick="ktory(3)">
+        <label for="prioryet_4">4</label>
+        <input type="radio" id="prioryet_4" name="prioryet" value="4" onclick="ktory(4)">
+        <label for="prioryet_5">5</label>
+        <input type="radio" id="prioryet_5" name="prioryet" value="5" onclick="ktory(5)"><br />
+        
+        <label for="kategoria">Kategoria</label>
+        <select id="select" name="select">
+            <option id="H1" value="Horor">Horror</option>
+            <option id="H2" value="Sensacyjny">Sensacyjny</option>
+            <option id="H3" value="Komedia">Komedia</option>
+        </select><br />
+        <input type="submit" id="submited" name="submit" value="Wyślij"></input>
+    </form>
+    <div class="error">Błąd w formularzu</div>
+    <table>
+        <tbody>
+            <tr>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+                <td>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        
+    
+
+    </script>
+    <script src="http://127.0.0.1:35729/livereload.js"></script>
+</body>
+</html>

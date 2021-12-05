@@ -1,0 +1,14 @@
+body {
+    text-align: center;
+}
+table {
+    margin: 100px auto;
+}
+td{
+    border: 1px solid black;
+}
+.error {
+    color: red;
+    font-weight: bold;
+    display: none;
+}
